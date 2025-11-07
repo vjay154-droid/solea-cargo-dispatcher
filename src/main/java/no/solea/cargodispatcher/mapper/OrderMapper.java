@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 public class OrderMapper {
 
@@ -35,7 +36,7 @@ public class OrderMapper {
         List<OrderItemResponseDTO> itemResponseDTOS = order.getItems().stream()
                 .map(orderItem -> {
                     Product product = products.stream()
-                            .filter(product1 -> product1.getId() == orderItem.getProductId())
+                            .filter(product1 -> Objects.equals(product1.getId(), orderItem.getProductId()))
                             .findFirst()
                             .orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                     "Product not found for id " + orderItem.getProductId()));
