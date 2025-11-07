@@ -26,7 +26,7 @@ public class VehicleService {
         return dataLoader.getVehicles().stream()
                 .filter(vehicle -> vehicle.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Vehicle not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Vehicle not found for id "+id));
     }
 
     public List<VehicleResponseDTO> getVehicleResponseList(){

@@ -52,8 +52,8 @@ public class OrderMapper {
         return new OrderResponseDTO(order.getId(),
                 planet.getName(),
                 order.getAssignedVehicle().getName(),
-                order.getTravelTime(),
                 order.getTotalVolume(),
+                order.getTravelTime(),
                 itemResponseDTOS);
     }
 }

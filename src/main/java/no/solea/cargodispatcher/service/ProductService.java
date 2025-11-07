@@ -27,7 +27,8 @@ public class ProductService {
        return dataLoader.getProducts().stream()
                 .filter(product1 -> product1.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Product not found for id "+id));
     }
 
     public Product createProduct(Product product){
@@ -41,7 +42,6 @@ public class ProductService {
         product.setId(newId);
 
         products.add(product);
-        dataLoader.saveProductsToFile(products);
 
         return product;
     }

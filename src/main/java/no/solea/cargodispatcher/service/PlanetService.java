@@ -27,7 +27,7 @@ public class PlanetService {
         return dataLoader.getPlanets().stream()
                 .filter(planet -> planet.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Planet not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Planet not found for id "+id));
     }
 
     public List<PlanetResponseDTO> getPlanetResponseList(){
