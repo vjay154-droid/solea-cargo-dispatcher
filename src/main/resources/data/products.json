@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Package of adult diapers",
+    "size": 1
+  },
+  {
+    "id": 2,
+    "name": "Ten pack clown suit",
+    "size": 1
+  },
+  {
+    "id": 3,
+    "name": "Carton of drugs",
+    "size": 0.5
+  },
+  {
+    "id": 4,
+    "name": "Big pack Mozzarella cheese",
+    "size": 10
+  },
+  {
+    "id": 5,
+    "name": "Toilet seat",
+    "size": 4
+  },
+  {
+    "id": 6,
+    "name": "Fabricator",
+    "size": 40
+  },
+  {
+    "id": 7,
+    "name": "Paper",
+    "size": 3
+  },
+  {
+    "id": 8,
+    "name": "Crocs",
+    "size": 6
+  }
+]

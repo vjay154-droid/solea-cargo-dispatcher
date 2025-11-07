@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Mars",
+    "distance": 0.52
+  },
+  {
+    "id": 2,
+    "name": "Jupiter",
+    "distance": 4.2
+  },
+  {
+    "id": 3,
+    "name": "Saturn",
+    "distance": 8.52
+  },
+  {
+    "id": 4,
+    "name": "Uranus",
+    "distance": 18.21
+  },
+  {
+    "id": 5,
+    "name": "Neptune",
+    "distance": 29.09
+  }
+]
