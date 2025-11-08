@@ -66,7 +66,7 @@ Data Loading
 
 The application loads initial data from JSON files in src/main/resources/data using the DataLoader service. This allows easy modification of products, planets, and vehicles without changing code.
 
-esting
+Testing
 
 Unit tests use JUnit 5 and Mockito.
 
