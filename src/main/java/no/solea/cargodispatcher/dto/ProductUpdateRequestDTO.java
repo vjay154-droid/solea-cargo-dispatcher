@@ -7,6 +7,7 @@ public record ProductUpdateRequestDTO(
         Double size
 ) {
     @AssertTrue(message = "At least one field (name or size) must be provided for update")
+    @SuppressWarnings("unused")
     public boolean isValid() {
         return name != null || size != null;
     }
