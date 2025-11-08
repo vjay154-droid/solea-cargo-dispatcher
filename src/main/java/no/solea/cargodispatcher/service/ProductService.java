@@ -1,7 +1,9 @@
 package no.solea.cargodispatcher.service;
 
+import lombok.extern.slf4j.Slf4j;
 import no.solea.cargodispatcher.dto.ProductRequestDTO;
 import no.solea.cargodispatcher.dto.ProductResponseDTO;
+import no.solea.cargodispatcher.dto.ProductUpdateRequestDTO;
 import no.solea.cargodispatcher.loader.DataLoader;
 import no.solea.cargodispatcher.mapper.ProductMapper;
 import no.solea.cargodispatcher.model.Product;
@@ -12,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ProductService {
     private final DataLoader dataLoader;
 
@@ -24,15 +27,20 @@ public class ProductService {
     }
 
     public Product getProductById(long id){
-       return dataLoader.getProducts().stream()
+        log.info("Getting product by id");
+
+        Product product = dataLoader.getProducts().stream()
                 .filter(product1 -> product1.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Product not found for id "+id));
+
+        log.info("Get product by id done {}",product);
+        return product;
     }
 
     public Product createProduct(Product product){
-
+        log.info("Creating new product {}", product);
         List<Product> products = dataLoader.getProducts();
 
         long newId = products.stream()
@@ -43,10 +51,13 @@ public class ProductService {
 
         products.add(product);
 
+        log.info("Created new product {}", product);
         return product;
     }
 
     public Product updateProduct(Product product){
+        log.info("Updating product {}", product);
+
         Product existingProduct = getProductById(product.getId());
 
         if (product.getName() != null)
@@ -54,6 +65,7 @@ public class ProductService {
         if (product.getSize() != null)
             existingProduct.setSize(product.getSize());
 
+        log.info("Updated product {}", existingProduct);
         return existingProduct;
     }
 
@@ -71,8 +83,8 @@ public class ProductService {
     }
 
     public ProductResponseDTO updateProductResponse(long id,
-                                                    ProductRequestDTO productRequestDTO){
-        Product product = ProductMapper.toProduct(productRequestDTO);
+                                                    ProductUpdateRequestDTO productUpdateRequestDTO){
+        Product product = ProductMapper.toProduct(productUpdateRequestDTO);
         product.setId(id);
         return ProductMapper.toProductResponseDTO(updateProduct(product));
     }

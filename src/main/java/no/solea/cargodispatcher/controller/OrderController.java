@@ -1,5 +1,6 @@
 package no.solea.cargodispatcher.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import no.solea.cargodispatcher.dto.OrderRequestDTO;
 import no.solea.cargodispatcher.dto.OrderResponseDTO;
 import no.solea.cargodispatcher.service.OrderService;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
@@ -22,16 +24,19 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderResponseDTO>> getOrders(){
+        log.info("Get /orders called");
         return ResponseEntity.ok(orderService.getOrders());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable long id){
+        log.info("Get /orders/{} called",id);
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
     @PostMapping
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+        log.info("Post /orders called with : {}",orderRequestDTO);
         if (orderRequestDTO.orderItemDTOList() == null || orderRequestDTO.orderItemDTOList().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Order must contain at least one item");

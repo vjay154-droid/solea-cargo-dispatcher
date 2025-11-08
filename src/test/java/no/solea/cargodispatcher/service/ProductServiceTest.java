@@ -2,6 +2,7 @@ package no.solea.cargodispatcher.service;
 
 import no.solea.cargodispatcher.dto.ProductRequestDTO;
 import no.solea.cargodispatcher.dto.ProductResponseDTO;
+import no.solea.cargodispatcher.dto.ProductUpdateRequestDTO;
 import no.solea.cargodispatcher.loader.DataLoader;
 import no.solea.cargodispatcher.model.Product;
 import org.junit.jupiter.api.BeforeEach;
@@ -107,7 +108,7 @@ public class ProductServiceTest {
 
     @Test
     void updateProductResponse_shouldReturnDTO() {
-        ProductRequestDTO request = new ProductRequestDTO("UpdatedWidget", 12.0);
+        ProductUpdateRequestDTO request = new ProductUpdateRequestDTO("UpdatedWidget", 12.0);
         ProductResponseDTO dto = productService.updateProductResponse(1L,request);
 
         assertEquals(1L,dto.id());

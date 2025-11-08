@@ -1,5 +1,6 @@
 package no.solea.cargodispatcher.service;
 
+import lombok.extern.slf4j.Slf4j;
 import no.solea.cargodispatcher.dto.OrderRequestDTO;
 import no.solea.cargodispatcher.dto.OrderResponseDTO;
 import no.solea.cargodispatcher.mapper.OrderMapper;
@@ -13,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
+@Slf4j
 public class OrderService {
     private final PlanetService planetService;
     private final ProductService productService;
@@ -30,6 +32,7 @@ public class OrderService {
     }
 
     public OrderResponseDTO placeOrder(OrderRequestDTO orderRequestDTO){
+        log.info("Placing order {}",orderRequestDTO);
         Order order = OrderMapper.toOrder(orderRequestDTO);
 
         Planet planet = planetService.getPlanetById(order.getPlanetId());
@@ -48,22 +51,27 @@ public class OrderService {
         order.setTravelTime(travelTime);
         order.setTotalVolume(totalVolume);
 
+        log.info("Placed order {}",order);
         return OrderMapper.toOrderResponseDTO(order,planet,products);
     }
 
     public List<OrderResponseDTO> getOrders(){
-        return orders.stream()
+        log.info("Getting orders");
+        List<OrderResponseDTO> orderResponseDTOS = orders.stream()
                 .map(this::mapOrders)
                 .toList();
+        log.info("Get orders done {}",orderResponseDTOS);
+        return orderResponseDTOS;
     }
 
     public OrderResponseDTO getOrderById(long orderId){
+        log.info("Getting order {}",orderId);
         Order order = orders.stream()
                 .filter(order1 -> order1.getId() == orderId)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Order not found for id "+orderId));
-
+        log.info("Get order {}",order);
         return mapOrders(order);
     }
 

@@ -2,6 +2,7 @@ package no.solea.cargodispatcher.mapper;
 
 import no.solea.cargodispatcher.dto.ProductRequestDTO;
 import no.solea.cargodispatcher.dto.ProductResponseDTO;
+import no.solea.cargodispatcher.dto.ProductUpdateRequestDTO;
 import no.solea.cargodispatcher.model.Product;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public class ProductMapper {
                 0L,
                 productRequestDTO.name(),
                 productRequestDTO.size()
+        );
+    }
+
+    public static Product toProduct(
+            ProductUpdateRequestDTO productUpdateRequestDTO) {
+        return new Product(
+                0L,
+                productUpdateRequestDTO.name(),
+                productUpdateRequestDTO.size()
         );
     }
 

@@ -1,5 +1,6 @@
 package no.solea.cargodispatcher.service;
 
+import lombok.extern.slf4j.Slf4j;
 import no.solea.cargodispatcher.dto.VehicleResponseDTO;
 import no.solea.cargodispatcher.loader.DataLoader;
 import no.solea.cargodispatcher.mapper.VehicleMapper;
@@ -11,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class VehicleService {
     private final DataLoader dataLoader;
 
@@ -19,15 +21,23 @@ public class VehicleService {
     }
 
     public List<Vehicle> getVehicles(){
-        return dataLoader.getVehicles();
+        log.info("Getting vehicles");
+        List<Vehicle> vehicles = dataLoader.getVehicles();
+        log.info("Found {} vehicles", vehicles.size());
+        return vehicles;
     }
 
     public Vehicle getVehicleById(long id){
-        return dataLoader.getVehicles().stream()
-                .filter(vehicle -> vehicle.getId() == id)
+        log.info("Getting vehicle {}", id);
+
+        Vehicle vehicle = dataLoader.getVehicles().stream()
+                .filter(vehicle1 -> vehicle1.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Vehicle not found for id "+id));
+
+        log.info("Vehicle {}", vehicle);
+        return vehicle;
     }
 
     public List<VehicleResponseDTO> getVehicleResponseList(){
