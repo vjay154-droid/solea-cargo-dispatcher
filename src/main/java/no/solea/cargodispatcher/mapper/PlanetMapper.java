@@ -5,6 +5,9 @@ import no.solea.cargodispatcher.model.Planet;
 
 import java.util.List;
 
+/**
+ * Utility class for converting between Planet models and Planet DTOs.
+ */
 public class PlanetMapper {
 
     public static PlanetResponseDTO toPlanetResponseDTO(Planet planet){

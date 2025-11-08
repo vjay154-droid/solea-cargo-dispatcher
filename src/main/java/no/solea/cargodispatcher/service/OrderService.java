@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Service layer for managing orders.
+ * Handles placing orders, calculating total volume, assigning vehicles, and retrieving orders.
+ */
 @Service
 @Slf4j
 public class OrderService {
@@ -31,6 +35,12 @@ public class OrderService {
         this.vehicleService = vehicleService;
     }
 
+    /**
+     * Places a new order.
+     *
+     * @param orderRequestDTO order request containing planet ID and items
+     * @return OrderResponseDTO with assigned vehicle and calculated travel time
+     */
     public OrderResponseDTO placeOrder(OrderRequestDTO orderRequestDTO){
         log.info("Placing order {}",orderRequestDTO);
         Order order = OrderMapper.toOrder(orderRequestDTO);
@@ -51,19 +61,30 @@ public class OrderService {
         order.setTravelTime(travelTime);
         order.setTotalVolume(totalVolume);
 
-        log.info("Placed order {}",order);
+        log.info("Order placed successfully {}",order);
         return OrderMapper.toOrderResponseDTO(order,planet,products);
     }
 
+    /**
+     * Retrieve all orders.
+     *
+     * @return list of OrderResponseDTO
+     */
     public List<OrderResponseDTO> getOrders(){
-        log.info("Getting orders");
+        log.info("Getting all orders");
         List<OrderResponseDTO> orderResponseDTOS = orders.stream()
                 .map(this::mapOrders)
                 .toList();
-        log.info("Get orders done {}",orderResponseDTOS);
+        log.info("Returning {} orders",orderResponseDTOS.size());
         return orderResponseDTOS;
     }
 
+    /**
+     * Retrieve a specific order by ID.
+     *
+     * @param orderId order ID
+     * @return OrderResponseDTO
+     */
     public OrderResponseDTO getOrderById(long orderId){
         log.info("Getting order {}",orderId);
         Order order = orders.stream()
@@ -71,10 +92,13 @@ public class OrderService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Order not found for id "+orderId));
-        log.info("Get order {}",order);
+        log.info("Returning order {}",order);
         return mapOrders(order);
     }
 
+    /**
+     * Maps an Order object to OrderResponseDTO.
+     */
     private OrderResponseDTO mapOrders(Order order) {
         Planet planet = planetService.getPlanetById(order.getPlanetId());
         List<Product> products = getProducts(order);
@@ -84,6 +108,9 @@ public class OrderService {
                 products);
     }
 
+    /**
+     * Fetch all Product objects for the given order items.
+     */
     private List<Product> getProducts(Order order){
         List<Product> products = new ArrayList<>();
 
@@ -96,6 +123,9 @@ public class OrderService {
         return products;
     }
 
+    /**
+     * Computes total volume of an order.
+     */
     private double computeTotalVolume(List<OrderItem> items, List<Product> products){
         double volume = 0.0;
         for (int i=0; i<items.size(); i++){
@@ -104,6 +134,10 @@ public class OrderService {
         return volume;
     }
 
+    /**
+     * Assigns the most optimal vehicle for the order.
+     * Chooses the vehicle that can carry the total volume and reach the planet fastest.
+     */
     private Vehicle findAssignedVehicle(Double totalVolume,Double distance){
         List<Vehicle> vehicles = vehicleService.getVehicles();
         double maxCapacity = vehicles.stream()

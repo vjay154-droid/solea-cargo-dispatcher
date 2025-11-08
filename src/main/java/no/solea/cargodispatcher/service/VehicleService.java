@@ -11,6 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Service layer for managing vehicles.
+ * Provides operations to fetch vehicles and convert them to DTOs for API responses.
+ */
 @Service
 @Slf4j
 public class VehicleService {
@@ -20,6 +24,11 @@ public class VehicleService {
         this.dataLoader = dataLoader;
     }
 
+    /**
+     * Retrieve all vehicles.
+     *
+     * @return list of Vehicle objects
+     */
     public List<Vehicle> getVehicles(){
         log.info("Getting vehicles");
         List<Vehicle> vehicles = dataLoader.getVehicles();
@@ -27,6 +36,13 @@ public class VehicleService {
         return vehicles;
     }
 
+    /**
+     * Retrieve a vehicle by its ID.
+     *
+     * @param id vehicle ID
+     * @return Vehicle object
+     * @throws ResponseStatusException if vehicle not found
+     */
     public Vehicle getVehicleById(long id){
         log.info("Getting vehicle {}", id);
 
@@ -36,14 +52,25 @@ public class VehicleService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Vehicle not found for id "+id));
 
-        log.info("Vehicle {}", vehicle);
+        log.info("Found vehicle {}", vehicle);
         return vehicle;
     }
 
+    /**
+     * Retrieve all vehicles as DTOs.
+     *
+     * @return list of VehicleResponseDTO
+     */
     public List<VehicleResponseDTO> getVehicleResponseList(){
         return VehicleMapper.toVehicleResponseDTO(getVehicles());
     }
 
+    /**
+     * Retrieve a vehicle as DTO by its ID.
+     *
+     * @param id vehicle ID
+     * @return VehicleResponseDTO
+     */
     public VehicleResponseDTO getVehicleResponseById(long id){
         return VehicleMapper.toVehicleResponseDTO(getVehicleById(id));
     }

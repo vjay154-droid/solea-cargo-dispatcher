@@ -11,6 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Service layer for managing planets.
+ * Provides operations for retrieving planets and converting them to response DTOs.
+ */
 @Service
 @Slf4j
 public class PlanetService {
@@ -21,13 +25,25 @@ public class PlanetService {
         this.dataLoader = dataLoader;
     }
 
+    /**
+     * Retrieve all planets.
+     *
+     * @return list of Planet objects
+     */
     public List<Planet> getPlanets(){
         log.info("Getting planets");
         List<Planet> planets= dataLoader.getPlanets();
-        log.info("Get planets done {}",planets);
+        log.info("Fetched {} planets",planets.size());
         return planets;
     }
 
+    /**
+     * Retrieve a planet by its ID.
+     *
+     * @param id planet ID
+     * @return Planet object
+     * @throws ResponseStatusException if planet not found
+     */
     public Planet getPlanetById(long id){
         log.info("Getting planet by id");
         Planet planet = dataLoader.getPlanets().stream()
@@ -35,14 +51,25 @@ public class PlanetService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Planet not found for id "+id));
-        log.info("Get planet by id done {}",planet);
+        log.info("Found planet {}",planet);
         return planet;
     }
 
+    /**
+     * Retrieve all planets as DTOs for API responses.
+     *
+     * @return list of PlanetResponseDTO
+     */
     public List<PlanetResponseDTO> getPlanetResponseList(){
         return PlanetMapper.toPlanetResponseDTOs(getPlanets());
     }
 
+    /**
+     * Retrieve a single planet as a DTO by its ID.
+     *
+     * @param id planet ID
+     * @return PlanetResponseDTO
+     */
     public PlanetResponseDTO getPlanetResponseById(long id){
         return PlanetMapper.toPlanetResponseDTO(getPlanetById(id));
     }

@@ -5,6 +5,9 @@ import no.solea.cargodispatcher.model.Vehicle;
 
 import java.util.List;
 
+/**
+ * Utility class for converting between Vehicle models and Vehicle DTOs.
+ */
 public class VehicleMapper {
     public static VehicleResponseDTO toVehicleResponseDTO(Vehicle vehicle) {
         return new VehicleResponseDTO(

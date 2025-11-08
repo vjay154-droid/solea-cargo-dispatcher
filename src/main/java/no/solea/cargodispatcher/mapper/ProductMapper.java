@@ -7,6 +7,9 @@ import no.solea.cargodispatcher.model.Product;
 
 import java.util.List;
 
+/**
+ * Utility class for converting between Product models and Product DTOs.
+ */
 public class ProductMapper {
 
     public static ProductResponseDTO toProductResponseDTO(Product product) {

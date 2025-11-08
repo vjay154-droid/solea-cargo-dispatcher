@@ -13,6 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Utility class for converting between Order models and Order DTOs.
+ */
 public class OrderMapper {
 
     public static Order toOrder(OrderRequestDTO orderRequestDTO){
