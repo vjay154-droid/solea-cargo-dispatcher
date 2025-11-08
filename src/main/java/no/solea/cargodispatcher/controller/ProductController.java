@@ -74,15 +74,15 @@ public class ProductController {
      * Update an existing product.
      *
      * @param id The ID of the product to update.
-     * @param productRequestDTO The product data to update. At least one field must be provided.
+     * @param productUpdateRequestDTO The product data to update. At least one field must be provided.
      * @return ProductResponseDTO wrapped in ResponseEntity with HTTP 200.
      */
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable long id,
-            @Valid @RequestBody ProductUpdateRequestDTO productRequestDTO){
-        log.info("Patch /products/{} called with: {}",id,productRequestDTO);
+            @Valid @RequestBody ProductUpdateRequestDTO productUpdateRequestDTO){
+        log.info("Patch /products/{} called with: {}",id,productUpdateRequestDTO);
         return ResponseEntity.ok(
-                productService.updateProductResponse(id,productRequestDTO));
+                productService.updateProductResponse(id,productUpdateRequestDTO));
     }
 }
