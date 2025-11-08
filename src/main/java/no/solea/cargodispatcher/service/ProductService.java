@@ -70,8 +70,10 @@ public class ProductService {
         return ProductMapper.toProductResponseDTO(createProduct(product));
     }
 
-    public ProductResponseDTO updateProductResponse(ProductRequestDTO productRequestDTO){
+    public ProductResponseDTO updateProductResponse(long id,
+                                                    ProductRequestDTO productRequestDTO){
         Product product = ProductMapper.toProduct(productRequestDTO);
+        product.setId(id);
         return ProductMapper.toProductResponseDTO(updateProduct(product));
     }
 }

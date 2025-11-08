@@ -12,10 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -64,33 +64,33 @@ public class OrderControllerTest {
     void testCreateOrder() {
         when(orderService.placeOrder(orderRequest)).thenReturn(orderResponse);
 
-        OrderResponseDTO response = Objects.requireNonNull(
-                orderController.createOrder(orderRequest).getBody(),
-                "Response body should not be null"
-        );
+        ResponseEntity<OrderResponseDTO> response =
+                orderController.createOrder(orderRequest);
 
-        assertEquals(1L, response.id());
-        assertEquals("Mars", response.planetName());
-        assertEquals("Cheetah Gonzales", response.vehicleName());
-        assertEquals(15.0, response.totalVolume());
-        assertEquals(12.0, response.travelTime());
-        assertEquals(2, response.items().size());
-        assertEquals("Package of adult diapers", response.items().getFirst().productName());
-        assertEquals(10, response.items().getFirst().quantity());
-        assertEquals(1.0, response.items().getFirst().productSize());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1L, response.getBody().id());
+        assertEquals("Mars", response.getBody().planetName());
+        assertEquals("Cheetah Gonzales", response.getBody().vehicleName());
+        assertEquals(15.0, response.getBody().totalVolume());
+        assertEquals(12.0, response.getBody().travelTime());
+        assertEquals(2, response.getBody().items().size());
+        assertEquals("Package of adult diapers", response.getBody().items().getFirst().productName());
+        assertEquals(10, response.getBody().items().getFirst().quantity());
+        assertEquals(1.0, response.getBody().items().getFirst().productSize());
     }
 
     @Test
     void testGetOrders() {
         when(orderService.getOrders()).thenReturn(List.of(orderResponse));
 
-        List<OrderResponseDTO> orders = Objects.requireNonNull(
-                    orderController.getOrders().getBody(),
-                "Response body should not be null"
-        );
+        ResponseEntity<List<OrderResponseDTO>> orders =
+                    orderController.getOrders();
 
-        assertEquals(1, orders.size());
-        OrderResponseDTO first = orders.getFirst();
+        assertNotNull(orders.getBody());
+        assertEquals(HttpStatus.OK, orders.getStatusCode());
+        assertEquals(1, orders.getBody().size());
+        OrderResponseDTO first = orders.getBody().getFirst();
         assertEquals("Mars", first.planetName());
         assertEquals("Cheetah Gonzales", first.vehicleName());
         assertEquals(2, first.items().size());
@@ -101,17 +101,16 @@ public class OrderControllerTest {
     void testGetOrderById() {
         when(orderService.getOrderById(1L)).thenReturn(orderResponse);
 
-        OrderResponseDTO response = Objects.requireNonNull(
-                orderController.getOrderById(1L).getBody(),
-                "Response body should not be null"
-        );
+        ResponseEntity<OrderResponseDTO> response = orderController.getOrderById(1L);
 
-        assertEquals(1L, response.id());
-        assertEquals("Mars", response.planetName());
-        assertEquals("Cheetah Gonzales", response.vehicleName());
-        assertEquals(2, response.items().size());
-        assertEquals(5, response.items().get(1).quantity());
-        assertEquals(1.0, response.items().get(1).productSize());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1L, response.getBody().id());
+        assertEquals("Mars", response.getBody().planetName());
+        assertEquals("Cheetah Gonzales", response.getBody().vehicleName());
+        assertEquals(2, response.getBody().items().size());
+        assertEquals(5, response.getBody().items().get(1).quantity());
+        assertEquals(1.0, response.getBody().items().get(1).productSize());
     }
 
     @Test

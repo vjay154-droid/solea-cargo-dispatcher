@@ -42,9 +42,10 @@ public class ProductController {
                 );
     }
 
-    @PatchMapping
-    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody ProductRequestDTO productRequestDTO){
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable long id,
+                                                            @RequestBody ProductRequestDTO productRequestDTO){
         return ResponseEntity.ok(
-                productService.updateProductResponse(productRequestDTO));
+                productService.updateProductResponse(id,productRequestDTO));
     }
 }

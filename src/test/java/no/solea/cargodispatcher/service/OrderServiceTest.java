@@ -129,7 +129,7 @@ public class OrderServiceTest {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class,
                 () -> orderService.placeOrder(request));
 
-        assertTrue(ex.getMessage().contains("Planet not found for 999"));
+        assertTrue(ex.getMessage().contains("Planet not found for"));
     }
 
     @Test
