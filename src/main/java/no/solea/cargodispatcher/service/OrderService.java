@@ -38,7 +38,7 @@ public class OrderService {
 
         double totalVolume = computeTotalVolume(order.getItems(), products);
 
-        Vehicle assignedVehicle = findAssignedVehicle(totalVolume);
+        Vehicle assignedVehicle = findAssignedVehicle(totalVolume,planet.getDistance());
 
         order.setAssignedVehicle(assignedVehicle);
         order.setId(orderId++);
@@ -96,7 +96,7 @@ public class OrderService {
         return volume;
     }
 
-    private Vehicle findAssignedVehicle(double totalVolume){
+    private Vehicle findAssignedVehicle(Double totalVolume,Double distance){
         List<Vehicle> vehicles = vehicleService.getVehicles();
         double maxCapacity = vehicles.stream()
                 .mapToDouble(Vehicle::getCapacity)
@@ -111,7 +111,7 @@ public class OrderService {
 
         return vehicles.stream()
                 .filter(vehicle -> vehicle.getCapacity() >= totalVolume)
-                .min(Comparator.comparingDouble(Vehicle::getCapacity))
+                .min(Comparator.comparingDouble(v -> distance/v.getSpeed()))
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "No suitable vehicle found"));
     }

@@ -1,9 +1,9 @@
 package no.solea.cargodispatcher.dto;
 
 public record OrderItemResponseDTO(
-        long productId,
+        Long productId,
         String productName,
         Integer quantity,
-        double productSize
+        Double productSize
 ) {
 }

@@ -6,6 +6,7 @@ import no.solea.cargodispatcher.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+        if (orderRequestDTO.orderItemDTOList() == null || orderRequestDTO.orderItemDTOList().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Order must contain at least one item");
+        }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(orderService.placeOrder(orderRequestDTO));
     }
